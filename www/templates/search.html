@@ -5,10 +5,10 @@
     </br>
 
     <div>
-      <button class="button button-full button-positive" ng-click="restaurantSearch(); openModal()">eat</button>
-      <button class="button button-full button-positive">tourism</button>
-      <button class="button button-full button-positive">find a hotel</button>
-      <button class="button button-full button-positive">shop</button>
+      <button class="button button-full button-positive" ng-click="doSearch('restaurant'); openModal()">eat</button>
+      <button class="button button-full button-positive" ng-click="doSearch('point_of_interest'); openModal()">tourism</button>
+      <button class="button button-full button-positive" ng-click="doSearch('amusement_park'); openModal()">find a hotel</button>
+      <button class="button button-full button-positive" ng-click="doSearch('store'); openModal()">shop</button>
     </div>
     <div id="map2"></div>
   </ion-content>

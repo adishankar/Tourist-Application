@@ -18,17 +18,19 @@ angular.module('starter.controllers', ['ngCordova'])
   }
 
   //finds current location and does a text search for restaurants
-  $scope.restaurantSearch = function() {
+  $scope.doSearch = function(v) {
 
     navigator.geolocation.getCurrentPosition(function(pos) {
 
       var centerLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
       //console.log(pos.coords.latitude);
 
+      console.log(v);
+
       var request = {
           location: centerLocation,
           radius: '500',
-          query: 'restaurant'
+          query: v
       };
       var map = new google.maps.Map(document.getElementById("map2"));
       var service = new google.maps.places.PlacesService(map);
@@ -110,17 +112,21 @@ angular.module('starter.controllers', ['ngCordova'])
         });
     });
 
+    //clear any leftover data
+  $scope.clearData = function(){
+    window.localStorage.removeItem("data");
+  }
+
   
 });
 
 function callback(results, status) {
-  console.log(status);
+  //console.log(status);
 
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
       var place = results[i];
       //console.log(place);
-      placesFound.push(place);
     }
   }
   else {
