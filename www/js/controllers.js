@@ -17,13 +17,14 @@ angular.module('starter.controllers', ['ngCordova'])
     alert(window.localStorage.getItem("data"));
   }
 
-  //finds current location and does a text search for restaurants
+  //finds current location and does a text search based on input
   $scope.doSearch = function(v) {
+
+    //window.localStorage.removeItem("data");
 
     navigator.geolocation.getCurrentPosition(function(pos) {
 
       var centerLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-      //console.log(pos.coords.latitude);
 
       console.log(v);
 
@@ -40,7 +41,7 @@ angular.module('starter.controllers', ['ngCordova'])
   }
   
   //open the modal which contains the map
-  $ionicModal.fromTemplateUrl('templates/map-modal.html', function($ionicModal) {
+  $ionicModal.fromTemplateUrl('templates/map-modal.html', function($ionicModal, $ionicPopup) {
         $scope.modal = $ionicModal;
     }, {
         scope: $scope,
@@ -76,17 +77,48 @@ angular.module('starter.controllers', ['ngCordova'])
 
           google.maps.event.addListenerOnce($scope.map, 'idle', function () {
 
+            
+            //search location markers
             for (var i=0; i<placesFound.length; i++){
+
+              
+              //var locationDetails = {name: placesFound[i].name, address: placesFound[i].formatted_address};
+              var locationDetails = placesFound[i].name;
+              console.log(locationDetails);
+
               var marker = new google.maps.Marker({
                 map: $scope.map,
-                position: placesFound[i].geometry.location
+                position: placesFound[i].geometry.location,
+                title: placesFound[i].name + '<br>' + placesFound[i].formatted_address
               });
+
+              
+              var infoWindow = new google.maps.InfoWindow();
+              
+              
+              google.maps.event.addListener(marker, 'click', function () {
+                  infoWindow.open($scope.map, marker);
+              });                  
+              
+              //set listener to open infowindow with marker title information
+              marker.addListener('click', function(){
+                infoWindow.setContent(this.title);
+                infoWindow.open($scope.map, this);
+              });
+
+              /*
+              marker.addListener('click', function() {
+                $ionicPopup.show();
+              });
+              */
             }
 
+            //center location marker
             var marker = new google.maps.Marker({
                 map: $scope.map,
                 animation: google.maps.Animation.DROP,
-                position: latLng
+                position: latLng,
+                label: 'My Location'
             });
         });
 
