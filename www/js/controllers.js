@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ngCordova'])
+angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
@@ -12,6 +12,16 @@ angular.module('starter.controllers', ['ngCordova'])
 
 //controller for search page
 .controller('SearchCtrl', function($scope, $ionicModal, $cordovaGeolocation) {
+
+  $scope.data = {};
+
+  //get location from autocomplete input, store in local storage?
+  $scope.onAddressSelection = function(location) {
+    var a = location.address_components;
+    console.log("from search: " + JSON.stringify(a));
+
+    window.localStorage.setItem("autocompleteData", JSON.stringify(a));
+  }
 
   $scope.loadData = function() {
     alert(window.localStorage.getItem("data"));
@@ -149,7 +159,14 @@ angular.module('starter.controllers', ['ngCordova'])
     window.localStorage.removeItem("data");
   }
 
-  
+})
+
+//Browse Controller
+.controller("BrowseCtrl", function($scope) {
+
+  var a = window.localStorage.getItem("autocompleteData");
+  console.log("from browse: " + a);
+
 });
 
 function callback(results, status) {
