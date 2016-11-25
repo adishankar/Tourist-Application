@@ -43,8 +43,28 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
 
       var centerLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
 
-      console.log(v);
+      
+     var searchPlaces = v.split(", ");
+     console.log(searchPlaces);
+     console.log(searchPlaces.length);
 
+     /*
+     for (var i=0; i<searchPlaces.length; i++)
+     {
+      var request = {
+            location: centerLocation,
+            radius: '500',
+            query: searchPlaces[i]
+      };
+      var map = new google.maps.Map(document.getElementById("map2"));
+      var service = new google.maps.places.PlacesService(map);
+      
+      console.log("searching for " + searchPlaces[i]);
+
+      service.textSearch(request, callback);
+     }
+     */
+     
       var request = {
           location: centerLocation,
           radius: '500',
@@ -54,6 +74,7 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
       var service = new google.maps.places.PlacesService(map);
                 
       service.textSearch(request, callback);
+      
     });
   }
 
@@ -67,9 +88,34 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
   //get location from autocomplete input, store in local storage?
   $scope.onAddressSelection = function(location) {
     var a = location.address_components;
-    console.log("from search: " + JSON.stringify(a));
+    var b = location.name;
+    var c = location.types;
+    
+    console.log(c);
+    //console.log("from search: " + JSON.stringify(a));
 
-    window.localStorage.setItem("autocompleteData", JSON.stringify(a));
+    //window.localStorage.setItem("autocompleteData", JSON.stringify(c));
+
+    var searchType = c[0];//first one for the sake of convenience
+    console.log("search location type: " + searchType);
+
+    navigator.geolocation.getCurrentPosition(function(pos) {
+
+      //console.log(searchType);
+
+      var centerLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+      
+        var request = {
+            location: centerLocation,
+            radius: '500',
+            query: searchType
+        };
+        var map = new google.maps.Map(document.getElementById("map4"));
+        var service = new google.maps.places.PlacesService(map);
+                  
+        service.textSearch(request, callback2);
+        
+      });
   }
 
   $scope.loadData = function() {
@@ -173,6 +219,8 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
                 infoWindow.open($scope.map, this);
               });
             }
+            //clear local data
+            window.localStorage.removeItem("data");
             
             
         });
@@ -189,10 +237,29 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
 })
 
 //Browse Controller
-.controller("BrowseCtrl", function($scope) {
+.controller("BrowseCtrl", function($scope, $window) { 
 
-  var a = window.localStorage.getItem("autocompleteData");
-  console.log("from browse: " + a);
+  $scope.refresh = function(){
+    $window.location.reload(true);
+  }
+
+  var v = window.localStorage.getItem("autocompleteData");
+
+  v = JSON.parse(v);
+  console.log(v);
+
+  var searchLocations = new Array();
+  for (var i=0; i<v.length; i++)
+  {
+    searchLocations[i] = {
+      name: v[i].name,
+      rating: v[i].rating
+    }
+  }
+
+  console.log(searchLocations);
+
+  $scope.locations = searchLocations;
 
 });
 
@@ -202,7 +269,7 @@ function callback(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
       var place = results[i];
-      //console.log(place);
+      console.log(place.name);
     }
   }
   else {
@@ -210,5 +277,36 @@ function callback(results, status) {
   }
 
   //console.log(results);
+  //console.log(JSON.stringify(results));
+
+  //appendToStorage("data", JSON.stringify(results))
+
   window.localStorage.setItem("data", JSON.stringify(results));
+}
+
+function appendToStorage(data, results){
+    var old = window.localStorage.getItem(data);
+    if(old === null) old = "";
+    window.localStorage.setItem("data", old + results);
+
+    var v = window.localStorage.getItem("data");
+    console.log(v);
+}
+
+function callback2(results, status) {
+  //console.log(status);
+
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      var place = results[i];
+      //console.log(place.name);
+    }
+  }
+  else {
+    console.log("error");
+  }
+
+  //console.log(results);
+  //puts results from search type into local storage
+  window.localStorage.setItem("autocompleteData", JSON.stringify(results));
 }

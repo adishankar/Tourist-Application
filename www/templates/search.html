@@ -4,11 +4,12 @@
     <button class="button button-full button-positive" ng-click="loadData()">Load Data</button>
     <button class="button button-full button-positive" ng-click="clearData()">Clear Data</button>
     </br>
-
+    <div id="map4"></div>
     <div id="autocomplete">
       <input type="text" placeholder="Change address" google-autocomplete-suggestion location="data.location" 
         country-code="{{countryCode}}" on-selection="onAddressSelection(location)" 
         ng-model="data.location.formatted_address" readonly required>
     </div>
+
   </ion-content>
 </ion-view>

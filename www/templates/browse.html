@@ -1,5 +1,16 @@
 <ion-view view-title="Browse">
   <ion-content>
-    <h1>Browse</h1>
+    <button class="button button-full button-positive" ng-click="refresh()">Get latest recommendations!</button>
+      
+      <div class="card list" ng-repeat="location in locations">
+        <div class="item item-divider">
+            {{location.name}}
+        </div>
+        
+        <div class="item item-text-wrap">
+            Rating: {{location.rating}}
+        </div>
+        
+      </div>
   </ion-content>
 </ion-view>
