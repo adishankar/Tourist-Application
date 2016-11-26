@@ -85,6 +85,31 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
 
   $scope.data = {};
 
+  //modal stuff
+  $ionicModal.fromTemplateUrl('my-modal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.openModal = function() {
+      $scope.modal.show();
+    };
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+    // Cleanup the modal when we're done with it!
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+    // Execute action on hide modal
+    $scope.$on('modal.hidden', function() {
+      // Execute action
+    });
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+      // Execute action
+    });
   //get location from autocomplete input, store in local storage?
   $scope.onAddressSelection = function(location) {
     var a = location.address_components;
@@ -233,6 +258,11 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
     $scope.$on('eventFired', function(event, data) {
         $scope.initialise();
     })
+
+})
+
+//Favorites Controller
+.controller('FavoritesCtrl', function($scope) {
 
 })
 
