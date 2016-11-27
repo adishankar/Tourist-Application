@@ -1,5 +1,17 @@
 <ion-view view-title="Favorites">
   <ion-content>
-
+      <button class="button button-full button-positive" ng-click="clearFavorites()">Clear Favorites</button>
+      <button class="button button-full button-positive" ng-click="showFavorites()">Show Favorites</button>
+      <button class="button button-full button-positive" ng-click="updateFavorites()">Update Favorites</button>
+      <div class="card list" ng-repeat="favorite in favorites">
+        <div class="item item-divider">
+            {{favorite.name}}
+        </div>
+        
+        <div class="item item-text-wrap">
+            {{favorite.address}}
+        </div>
+        
+      </div>
   </ion-content>
 </ion-view>

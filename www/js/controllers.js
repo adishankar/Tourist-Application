@@ -92,6 +92,13 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
     }).then(function(modal) {
       $scope.modal = modal;
     });
+
+    $scope.addToFavorites = function(u, v){
+      //console.log(u);
+      //console.log(v);
+      appendToStorage(u,v);
+
+    }
     $scope.openModal = function() {
       $scope.modal.show();
     };
@@ -109,11 +116,14 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
     // Execute action on remove modal
     $scope.$on('modal.removed', function() {
       // Execute action
-    });
+  });
+
   //get location from autocomplete input, store in local storage?
   $scope.onAddressSelection = function(location) {
     var a = location.address_components;
-    var b = location.name;
+    $scope.name = location.name;
+    $scope.address = location.formatted_address;
+    $scope.rating = location.rating;
     var c = location.types;
     
     console.log(c);
@@ -262,7 +272,41 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
 })
 
 //Favorites Controller
-.controller('FavoritesCtrl', function($scope) {
+.controller('FavoritesCtrl', function($scope, $window) {
+  $scope.clearFavorites = function(){
+    window.localStorage.removeItem("favorite");
+  }
+
+  $scope.showFavorites = function(){
+    console.log(window.localStorage.getItem("favorite"));
+  }
+
+  $scope.updateFavorites = function(){//refresh to get latest favorites
+    $window.location.reload(true);
+  }
+
+  var u = window.localStorage.getItem("favorite");
+  var v = window.localStorage.getItem("favoriteAddress");
+  //console.log(v);
+  
+  
+  var favoritePlaces = u.split(";");
+  var favoritePlacesAddr = v.split(";");
+  console.log(favoritePlaces);
+  console.log(favoritePlacesAddr);
+
+  var favorites = new Array();
+  for (var i=0; i<favoritePlaces.length; i++)
+  {
+    favorites[i] = {
+      name: favoritePlaces[i],
+      address: favoritePlacesAddr[i]
+    };
+  }
+
+  console.log(favorites);
+
+  $scope.favorites = favorites;
 
 })
 
@@ -314,13 +358,35 @@ function callback(results, status) {
   window.localStorage.setItem("data", JSON.stringify(results));
 }
 
-function appendToStorage(data, results){
-    var old = window.localStorage.getItem(data);
-    if(old === null) old = "";
-    window.localStorage.setItem("data", old + results);
+function appendToStorage(u, v){
+    //create object with search data
+    var w = {
+      name: u,
+      address: v
+    };
 
-    var v = window.localStorage.getItem("data");
-    console.log(v);
+    //var favoriteItem = JSON.stringify(w);//turn into string
+    //console.log(favoriteItem);
+    //console.log(JSON.parse(favoriteItem));
+
+    var favoriteItem = u;
+    var favoriteItemAddress = v;
+
+    var old = window.localStorage.getItem("favorite");//get old favorite data
+    var old2 = window.localStorage.getItem("favoriteAddress");
+
+    if(old === null) {
+      window.localStorage.setItem("favorite", u);//set as favorite if null
+      window.localStorage.setItem("favoriteAddress", v);
+    }
+    else {
+      window.localStorage.setItem("favorite", old + ";" + u);//append with ; as delimiter
+      window.localStorage.setItem("favoriteAddress", old2 + ";" + v);
+    }
+    
+
+    var x = window.localStorage.getItem("favorite");
+    //console.log(x);
 }
 
 function callback2(results, status) {
