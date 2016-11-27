@@ -289,22 +289,26 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
   var v = window.localStorage.getItem("favoriteAddress");
   //console.log(v);
   
-  
-  var favoritePlaces = u.split(";");
-  var favoritePlacesAddr = v.split(";");
-  console.log(favoritePlaces);
-  console.log(favoritePlacesAddr);
-
   var favorites = new Array();
-  for (var i=0; i<favoritePlaces.length; i++)
-  {
-    favorites[i] = {
-      name: favoritePlaces[i],
-      address: favoritePlacesAddr[i]
-    };
+  if (u != null){
+    var favoritePlaces = u.split(";");
+    var favoritePlacesAddr = v.split(";");
+    console.log(favoritePlaces);
+    console.log(favoritePlacesAddr);
+
+    
+    for (var i=0; i<favoritePlaces.length; i++)
+    {
+      favorites[i] = {
+        name: favoritePlaces[i],
+        address: favoritePlacesAddr[i]
+      };
   }
 
   console.log(favorites);
+  }
+  
+  
 
   $scope.favorites = favorites;
 
