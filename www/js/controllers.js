@@ -281,7 +281,10 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
               
               //set listener to open infowindow with marker title information
               marker.addListener('click', function(){
-                infoWindow.setContent(this.title);
+                var title = this.title;
+                window.localStorage.setItem("mapFavorite", title);
+
+                infoWindow.setContent(this.title + '<br> <button class="button button-positive button-small" onClick="infowindowFavorite()">Add to Favorites</button>');
                 infoWindow.open($scope.map, this);
               });
             }
@@ -440,4 +443,22 @@ function callback2(results, status) {
   //console.log(results);
   //puts results from search type into local storage
   window.localStorage.setItem("autocompleteData", JSON.stringify(results));
+}
+
+function infowindowFavorite() {
+  var v = window.localStorage.getItem("mapFavorite");
+  v = v.toString();
+  console.log(v);
+  var x = v.split(">");
+  //var u = v[1].replace("</a", "");
+  console.log(x);
+  //console.log(x[1]);
+  var y = x[1].replace('</a', '');//this is the location name
+  var z = x[3];//this is the location address
+
+  appendToStorage(y,z);
+
+  window.localStorage.removeItem("mapFavorite");
+
+  //<a target="_blank" href="https://www.youtube.com/results?search_query=Natura Coffee & Tea">Natura Coffee & Tea</a><br>12078 Collegiate Way, Orlando, FL 32817, United States
 }
