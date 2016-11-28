@@ -74,7 +74,7 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
 
   $scope.groups = [
     { name: 'Food', id: 1, items: [{subName: 'restaurant',subId: 'restaurant'}, {subName: 'cafe',subId: 'cafe'}, {subName: 'bakery',subId: 'bakery'}]},
-    { name: 'Tourism', id: 2, items: [{subName: 'aquarium',subId: 'aquarium'}, {subName: 'natural feature',subId: 'natural_feature'}, {subName: 'museum',subId: 'museum'}]},
+    { name: 'Tourism', id: 2, items: [{subName: 'amusement park',subId: 'amusement_park'}, {subName: 'aquarium',subId: 'aquarium'}, {subName: 'natural feature',subId: 'natural_feature'}, {subName: 'museum',subId: 'museum'}]},
     { name: 'Worship', id: 3, items: [{subName: 'church',subId: 'church'}, {subName: 'mosque',subId: 'mosque'}, {subName: 'synagogue',subId: 'synagogue'}]},
     { name: 'Outdoors', id: 4, items: [{subName: 'campground',subId: 'campground'}, {subName: 'park',subId: 'park'}, {subName: 'rv park',subId: 'rv_park'}]},
     { name: 'Shopping', id: 5, items: [{subName: 'jewelry store',subId: 'jewelry_store'}, {subName: 'liquor store',subId: 'liquor_store'},{ subName: 'shopping mall', subId: 'shopping_mall'}]},
