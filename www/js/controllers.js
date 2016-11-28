@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaGeolocation, SettingsUpdate, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaGeolocation, SettingsUpdate) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -246,6 +246,9 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
             
 
             //search location markers
+            if (placesFound != null){
+
+            
             for (var i=0; i<placesFound.length; i++){
               
               //var locationDetails = {name: placesFound[i].name, address: placesFound[i].formatted_address};
@@ -277,7 +280,7 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
             }
             //clear local data
             window.localStorage.removeItem("data");
-            
+          }
             
         });
 
