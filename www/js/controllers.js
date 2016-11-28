@@ -37,7 +37,7 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
       $scope.modal.hide();
     };
 
-    $timeout($scope.openModal, 10);
+    //$timeout($scope.openModal, 10);
 
     // Cleanup the modal when we're done with it!
     // $scope.$on('$destroy', function() {
