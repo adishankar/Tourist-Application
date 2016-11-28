@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaGeolocation, SettingsUpdate) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaGeolocation, SettingsUpdate, $timeout) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -16,12 +16,14 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
         $scope.modal = modal;
     });  
 
-    // $scope.rangeValue = "8";
+    // $scope.rangeValue = "6";
     $scope.rangeValue = SettingsUpdate.getRangeValue();
+    $scope.toggle = "false";
 
-
-    $scope.update = function(value, numPlaces) {
+    $scope.update = function(value, numPlaces, valueToggle) {
       $scope.rangeValue = value;
+      $scope.toggle = valueToggle;
+      console.log(" toggle is " + valueToggle);
       SettingsUpdate.setValues(value, numPlaces);
       // SettingsUpdate.setRangeValue(value);
       // SettingsUpdate.setNumPlaces(numPlaces);
@@ -35,12 +37,12 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
       $scope.modal.hide();
     };
 
-    //$timeout($scope.openModal, 10);
+    $timeout($scope.openModal, 10);
 
     // Cleanup the modal when we're done with it!
-    $scope.$on('$destroy', function() {
-      $scope.modal.remove();
-    });
+    // $scope.$on('$destroy', function() {
+    //   $scope.modal.remove();
+    // });
   
   //finds current location and does a text search based on input
   $scope.doSearch = function(v) {
@@ -51,48 +53,34 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
 
       var centerLocation = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
 
-      
-     var searchPlaces = v.split(", ");
-     console.log(searchPlaces);
-     console.log(searchPlaces.length);
+      console.log(v);
+      console.log("range is" + $scope.rangeValue);
 
-     /*
-     for (var i=0; i<searchPlaces.length; i++)
-     {
-      var request = {
-            location: centerLocation,
-            radius: '500',
-            query: searchPlaces[i]
-      };
-      var map = new google.maps.Map(document.getElementById("map2"));
-      var service = new google.maps.places.PlacesService(map);
-      
-      console.log("searching for " + searchPlaces[i]);
-
-      service.textSearch(request, callback);
-     }
-     */
-     
       var request = {
           location: centerLocation,
           // radius: '500',
           radius: (1609 * parseInt($scope.rangeValue)),
+          opennow: $scope.toggle,
           type: v
       };
       var map = new google.maps.Map(document.getElementById("map2"));
       var service = new google.maps.places.PlacesService(map);
                 
       service.textSearch(request, callback);
-      
     });
   }
 
+ 
+
   $scope.groups = [
-    { name: 'Food', id: 1, items: [{subId: 'restaurant'}, {subId: 'cafe'}, {subId: 'bakery'}]},
-    { name: 'Tourism', id: 2, items: [{subId: 'aquarium'}, {subId: 'monuments'}, {subId: 'museums'}]},
-    { name: 'Worship', id: 3, items: [{subId: 'church'}, {subId: 'mosque'}, {subId: 'synagogue'}]},
-    { name: 'Outdoors', id: 34, items: [{subId: 'campground'}, {subId: 'park'}, {subId: 'rv_park'}]}
+    { name: 'Food', id: 1, items: [{subName: 'restaurant',subId: 'restaurant'}, {subName: 'cafe',subId: 'cafe'}, {subName: 'bakery',subId: 'bakery'}]},
+    { name: 'Tourism', id: 2, items: [{subName: 'aquarium',subId: 'aquarium'}, {subName: 'natural feature',subId: 'natural_feature'}, {subName: 'museum',subId: 'museum'}]},
+    { name: 'Worship', id: 3, items: [{subName: 'church',subId: 'church'}, {subName: 'mosque',subId: 'mosque'}, {subName: 'synagogue',subId: 'synagogue'}]},
+    { name: 'Outdoors', id: 4, items: [{subName: 'campground',subId: 'campground'}, {subName: 'park',subId: 'park'}, {subName: 'rv park',subId: 'rv_park'}]},
+    { name: 'Shopping', id: 5, items: [{subName: 'jewelry store',subId: 'jewelry_store'}, {subName: 'liquor store',subId: 'liquor_store'},{ subName: 'shopping mall', subId: 'shopping_mall'}]},
+    { name: 'Services', id: 6, items: [{subName: 'hair care',subId: 'hair_care'}, {subName: 'bank',subId: 'bank'},{ subName: 'lodging', subId: 'lodging'}, { subName: 'car rental', subId: 'car_rental'}]}
   ];
+  
   
   $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
@@ -106,7 +94,6 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
   };
 
 })
-
 //controller for search page
 .controller('SearchCtrl', function($scope, $ionicModal, $cordovaGeolocation) {
 

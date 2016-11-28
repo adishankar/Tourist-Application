@@ -4,28 +4,39 @@
           <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
         </ion-header-bar>
         
-
         <ion-content class="padding" overflow-scroll="true">
-                      
-              <label class="item item-input" overflow-scroll="true">
-                Range:
-                <center><span class="col col-50">{{rangeValue}} Miles</span></center>
-              </label>
-              <div class="card text-center">
-                <i class="icon ion-minus-circled"></i>
-                <input type="range" min="0" max="20" step="1" ng-model="rangeValue"> 
-                <i class="icon ion-plus-circled"></i>
+              
+              <!-- <div class = "card"> -->
+              <div class = "card">
+                <label class="item item-input" overflow-scroll="true">
+                  Range:
+                  <center><span class="col col-50">{{rangeValue}} Miles</span></center>
+                </label>
+                <div class = "item range">
+                   <i class = "icon ion-minus-circled"></i>
+                   <input type="range" min="0" max="20" step="1" ng-model="rangeValue"> 
+                   <i class = "icon ion-plus-circled"></i>
+                </div>
               </div>
 
-              <label class="item item-input" overflow-scroll="true">
-                Max # of Places:
-                <center><span class="col col-50">{{numPlaces}}</span></center>
-              </label>
-              <div class="card text-center">
-                <i class="icon ion-minus-circled"></i>
-                <input type="range" min="0" max="20" step="1" ng-model="numPlaces"> 
-                <i class="icon ion-plus-circled"></i>
+              <div>
+                <label class="item item-input" overflow-scroll="true">
+                  Max # of Places:
+                  <center><span class="col col-50">{{numPlaces}}</span></center>
+                </label>
+
+                <div class = "item range">
+                   <i class = "icon ion-minus-circled"></i>
+                   <input type="range" min="0" max="20" step="1" ng-model="numPlaces"> 
+                   <i class = "icon ion-plus-circled"></i>
+                </div>
               </div>
+              <!-- </div>         -->
+
+              <div class="card">
+                <ion-toggle ng-model="openToggle" toggle-class="toggle-balanced">Show Only Open: </ion-toggle>
+              </div>
+
 
               <div>
                 <ion-list>
@@ -40,7 +51,7 @@
                     <ion-item class="item-accordion"
                               ng-repeat="item in group.items"
                               ng-show="isGroupShown(group)">
-                      <ion-radio ng-click="doSearch(item.subId);">{{item.subId}}</ion-radio>
+                      <ion-radio ng-click="doSearch(item.subId);">{{item.subName}}</ion-radio>
                     </ion-item>
                   </div>
                 </ion-list>
@@ -51,7 +62,7 @@
 
               <br>
 
-              <center><button align="center" ng-click="update(rangeValue, numPlaces)">Apply Filters</button></center>
+              <center><button align="center" ng-click="update(rangeValue, numPlaces, openToggle)">Apply Filters</button></center>
 
               <br>
 
