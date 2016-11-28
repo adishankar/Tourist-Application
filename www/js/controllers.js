@@ -268,7 +268,7 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
               var marker = new google.maps.Marker({
                 map: $scope.map,
                 position: placesFound[i].geometry.location,
-                title: placesFound[i].name + '<br>' + placesFound[i].formatted_address
+                title: '<a target="_blank" href="https://www.youtube.com/results?search_query=' + locationDetails+ '">' + placesFound[i].name  + '</a>' + '<br>' + placesFound[i].formatted_address
               });
 
               
