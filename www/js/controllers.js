@@ -16,10 +16,15 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
         $scope.modal = modal;
     });  
 
-    $scope.rangeValue = "8";
+    // $scope.rangeValue = "8";
+    $scope.rangeValue = SettingsUpdate.getRangeValue();
 
-    $scope.update = function(value) {
-      SettingsUpdate.setRangeValue(value);
+
+    $scope.update = function(value, numPlaces) {
+      $scope.rangeValue = value;
+      SettingsUpdate.setValues(value, numPlaces);
+      // SettingsUpdate.setRangeValue(value);
+      // SettingsUpdate.setNumPlaces(numPlaces);
       $scope.modal.hide();
     };
 
@@ -29,6 +34,9 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
     $scope.closeModal = function() {
       $scope.modal.hide();
     };
+
+    //$timeout($scope.openModal, 10);
+
     // Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function() {
       $scope.modal.remove();
@@ -67,8 +75,9 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
      
       var request = {
           location: centerLocation,
-          radius: '500',
-          query: v
+          // radius: '500',
+          radius: (1609 * parseInt($scope.rangeValue)),
+          type: v
       };
       var map = new google.maps.Map(document.getElementById("map2"));
       var service = new google.maps.places.PlacesService(map);
@@ -77,6 +86,24 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
       
     });
   }
+
+  $scope.groups = [
+    { name: 'Food', id: 1, items: [{subId: 'restaurant'}, {subId: 'cafe'}, {subId: 'bakery'}]},
+    { name: 'Tourism', id: 2, items: [{subId: 'aquarium'}, {subId: 'monuments'}, {subId: 'museums'}]},
+    { name: 'Worship', id: 3, items: [{subId: 'church'}, {subId: 'mosque'}, {subId: 'synagogue'}]},
+    { name: 'Outdoors', id: 34, items: [{subId: 'campground'}, {subId: 'park'}, {subId: 'rv_park'}]}
+  ];
+  
+  $scope.toggleGroup = function(group) {
+    if ($scope.isGroupShown(group)) {
+      $scope.shownGroup = null;
+    } else {
+      $scope.shownGroup = group;
+    }
+  };
+  $scope.isGroupShown = function(group) {
+    return $scope.shownGroup === group;
+  };
 
 })
 
@@ -190,7 +217,7 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
         var map = new google.maps.Map(document.getElementById("map3"), mapOptions);
         
         //Times 1500 to account for whatever weird units google expects.
-        $scope.rangeValue = 1500*parseFloat(SettingsUpdate.getRangeValue());
+        $scope.rangeValue = 1609*parseFloat(SettingsUpdate.getRangeValue());
 
         var scanRadiusDisplay = new google.maps.Circle(
             {
@@ -211,6 +238,10 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
         var placesFound = JSON.parse(dataString);
 
         console.log(placesFound);
+        $scope.numPlaces = SettingsUpdate.getNumPlaces();
+         // if (placesFound.length > $scope.numPlaces) {
+        //   placesFound = placesFound.slice(0, $scope.numPlaces);
+        // } 
             
 
         navigator.geolocation.getCurrentPosition(function(pos) {
@@ -303,9 +334,9 @@ angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
         name: favoritePlaces[i],
         address: favoritePlacesAddr[i]
       };
-  }
+    }
 
-  console.log(favorites);
+    console.log(favorites);
   }
   
   

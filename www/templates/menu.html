@@ -8,6 +8,11 @@
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
       </ion-nav-buttons>
+
+      <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-gear-a" ng-click="modal.show()">
+        </button>
+      </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
@@ -18,9 +23,9 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close ng-click="modal.show()">
+        <!--<ion-item menu-close ng-click="modal.show()">
           Settings
-        </ion-item>
+        </ion-item>-->
         <ion-item menu-close href="#/app/search">
           Search
         </ion-item>
