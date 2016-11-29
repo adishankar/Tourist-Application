@@ -1,9 +1,10 @@
 <ion-view view-title="Search">
   <ion-content>
 
+    <!--
     <button class="button button-full button-positive" ng-click="loadData()">Load Data</button>
     <button class="button button-full button-positive" ng-click="clearData()">Clear Data</button>
-    </br>
+    </br>-->
     <div id="map4"></div>
     <div id="autocomplete">
       <input type="text" placeholder="Change address" google-autocomplete-suggestion location="data.location" 
@@ -12,7 +13,7 @@
     </div>
     
     <div>
-      <button class="button button-full button-positive" ng-click="openModal()">View Details</button>
+      <button class="button button-round button-full button-positive" ng-click="openModal()">View Details</button>
       <script id="my-modal.html" type="text/ng-template">
         <ion-modal-view style="width: 40%; height: 5%; left: 30%">
           <ion-header-bar>

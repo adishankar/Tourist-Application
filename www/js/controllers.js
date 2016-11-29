@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova', 'ion-google-autocomplete'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaGeolocation, SettingsUpdate, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $cordovaGeolocation, SettingsUpdate) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
